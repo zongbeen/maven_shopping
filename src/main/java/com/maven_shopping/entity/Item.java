@@ -24,7 +24,7 @@ public class Item {
     private int price;
     @Column(nullable = false)
     private int stockNum;
-    @Lob
+//    @Lob
     @Column(nullable = false)
     private String itemDetail;
     @Enumerated(EnumType.STRING)
