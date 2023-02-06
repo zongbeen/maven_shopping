@@ -1,0 +1,9 @@
+spring:
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+
+    security:
+        user:
+          name: root
+          password: 19970
