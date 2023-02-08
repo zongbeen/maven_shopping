@@ -1,6 +1,7 @@
 package com.maven_shopping.entity;
 
 import com.maven_shopping.constant.ItemSellStatus;
+import com.maven_shopping.dto.ItemFormDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -31,4 +32,12 @@ public class Item extends BaseEntity{
     private ItemSellStatus itemSellStatus;
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
+
+    public void updateItem(ItemFormDto itemFormDto) {
+        this.itemName = itemFormDto.getItemName();
+        this.price = itemFormDto.getPrice();
+        this.stockNum = itemFormDto.getStockNum();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 }
