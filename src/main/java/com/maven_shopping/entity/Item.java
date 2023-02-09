@@ -2,6 +2,7 @@ package com.maven_shopping.entity;
 
 import com.maven_shopping.constant.ItemSellStatus;
 import com.maven_shopping.dto.ItemFormDto;
+import com.maven_shopping.exception.OutOfStockException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -39,5 +40,12 @@ public class Item extends BaseEntity{
         this.stockNum = itemFormDto.getStockNum();
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
+    public void removedStock(int stockNum) {
+        int restStock = this.stockNum - stockNum;
+        if(restStock<0) {
+            throw new OutOfStockException("상품의 재고가 부족합니다. (현재 재고 수량: " + this.stockNum + ")");
+        }
+        this.stockNum = restStock;
     }
 }
