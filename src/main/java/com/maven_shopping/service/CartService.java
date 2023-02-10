@@ -2,6 +2,8 @@ package com.maven_shopping.service;
 
 import com.maven_shopping.dto.CartDetailDto;
 import com.maven_shopping.dto.CartItemDto;
+import com.maven_shopping.dto.CartOrderDto;
+import com.maven_shopping.dto.OrderDto;
 import com.maven_shopping.entity.Cart;
 import com.maven_shopping.entity.CartItem;
 import com.maven_shopping.entity.Item;
@@ -28,6 +30,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final OrderService orderService;
 
     public Long addCart(CartItemDto cartItemDto, String email) {
         Item item = itemRepository.findById(cartItemDto.getItemId())
@@ -91,30 +94,30 @@ public class CartService {
                 .orElseThrow(EntityNotFoundException::new);
         cartItemRepository.delete(cartItem);
     }
-//
-//    public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email){
-//        List<OrderDto> orderDtoList = new ArrayList<>();
-//
-//        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
-//            CartItem cartItem = cartItemRepository
-//                    .findById(cartOrderDto.getCartItemId())
-//                    .orElseThrow(EntityNotFoundException::new);
-//
-//            OrderDto orderDto = new OrderDto();
-//            orderDto.setItemId(cartItem.getItem().getId());
-//            orderDto.setCount(cartItem.getCount());
-//            orderDtoList.add(orderDto);
-//        }
-//
-//        Long orderId = orderService.orders(orderDtoList, email);
-//        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
-//            CartItem cartItem = cartItemRepository
-//                    .findById(cartOrderDto.getCartItemId())
-//                    .orElseThrow(EntityNotFoundException::new);
-//            cartItemRepository.delete(cartItem);
-//        }
-//
-//        return orderId;
-//    }
+
+    public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email){
+        List<OrderDto> orderDtoList = new ArrayList<>();
+
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+            CartItem cartItem = cartItemRepository
+                    .findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+
+            OrderDto orderDto = new OrderDto();
+            orderDto.setItemId(cartItem.getItem().getId());
+            orderDto.setCount(cartItem.getCount());
+            orderDtoList.add(orderDto);
+        }
+
+        Long orderId = orderService.orders(orderDtoList, email);
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+            CartItem cartItem = cartItemRepository
+                    .findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+            cartItemRepository.delete(cartItem);
+        }
+
+        return orderId;
+    }
 
 }
